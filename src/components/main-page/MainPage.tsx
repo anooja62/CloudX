@@ -11,7 +11,7 @@ const MainPage = () => {
       <p className="text-white text-1xl text-center ">Secure Cloud Storage Solutions</p>
       <div className="flex flex-col md:flex-row justify-center items-center  px-6">
  
- 
+     
 
   
        {/* <div className="flex-1 flex flex-col justify-center items-center p-4">
@@ -50,7 +50,9 @@ const MainPage = () => {
     </div>
   </div>
 </div>  */}
-
+  <div className="flex flex-col md:flex-row justify-center items-center px-6 mt-6">
+        {/* other content*/}
+      </div>
     </div>
     </div>
   );
