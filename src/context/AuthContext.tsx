@@ -1,23 +1,32 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, provider, signInWithPopup, signOut } from "../config/firebase";
-import { User, onAuthStateChanged } from "firebase/auth";
+import { auth, provider, signInWithPopup, signOut, onAuthStateChanged } from "../config/firebase";
+import { User } from "firebase/auth";
 
 interface AuthContextType {
   user: User | null;
-  loginWithGoogle: () => void;
-  logout: () => void;
+  loading: boolean;
+  loginWithGoogle: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // ✅ Prevents UI flicker on refresh
 
-  // Listen for authentication changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+        localStorage.setItem("user", JSON.stringify(currentUser));
+      } else {
+        setUser(null);
+        localStorage.removeItem("user");
+      }
+      setLoading(false); // ✅ Set loading to false after checking auth state
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -25,18 +34,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
+      localStorage.setItem("user", JSON.stringify(result.user));
     } catch (error) {
-      console.error("Login Failed:", error);
+      console.error("❌ Login Failed:", error);
     }
   };
 
   const logout = async () => {
     await signOut(auth);
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );
