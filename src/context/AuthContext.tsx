@@ -33,6 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+      console.log(result,"result")
       setUser(result.user);
       localStorage.setItem("user", JSON.stringify(result.user));
     } catch (error) {
