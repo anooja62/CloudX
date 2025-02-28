@@ -67,7 +67,7 @@ const Navbar = () => {
               )}
               <div>
                 <p className="text-gray-800 text-sm font-semibold">{user.email}</p>
-                <button className="text-blue-500 text-xs underline" onClick={handleAddAccount}>Add another account</button>
+                <button className="text-blue-500 text-xs underline" onClick={handleAddAccount}>Change account</button>
               </div>
             </div>
             <button

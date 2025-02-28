@@ -9,7 +9,7 @@ const MainLayout = () => {
   if (!user) return <Navigate to="/login" />; // Redirect to login if not authenticated
 
   return (
-    <div className="flex">
+    <div className="flex  bg-slate-800">
       <Sidebar />
       <div className="flex-1">
         <Navbar />

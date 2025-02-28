@@ -41,7 +41,7 @@ const Recent: FC = () => {
 
   return (
     <div className="p-6 rounded-lg w-full">
-      <h2 className="text-xl font-semibold mb-4">Recent Files</h2>
+      <h2 className="text-xl font-semibold mb-4 text-white">Recent Files</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {files.map((file, index) => (
           <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-gray-800 text-white relative">
