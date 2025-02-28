@@ -62,10 +62,11 @@ const Recent: FC = () => {
                 <FaEllipsisV />
               </button>
               {menuOpen === index && (
-                <div
-                  ref={(el) => (dropdownRefs.current[index] = el)}
-                  className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg text-black text-sm z-10"
-                >
+                <div 
+                ref={(el) => { dropdownRefs.current[index] = el; }}
+                className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg text-black text-sm z-10"
+              >
+              
                  <button className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200">
                     <FaEye className="mr-2 text-gray-600" /> Preview
                   </button>

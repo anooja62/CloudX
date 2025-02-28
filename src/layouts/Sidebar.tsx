@@ -3,12 +3,19 @@ import { FaHome, FaClock, FaUser } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
-  const [selected, setSelected] = useState("Home");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate(); // ✅ Hook for navigation
 
-  const menuItems = [
+interface MenuItem {
+  name: string;
+  icon: JSX.Element;
+  path: string;
+}
+
+const Sidebar: React.FC = () => {
+  const [selected, setSelected] = useState<string>("Home");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  const menuItems: MenuItem[] = [
     { name: "Home", icon: <FaHome />, path: "/" },
     { name: "Profile", icon: <FaUser />, path: "/profile" },
     { name: "Recent", icon: <FaClock />, path: "/recent" },
@@ -20,7 +27,7 @@ const Sidebar = () => {
 
   const handleNavigation = (name: string, path: string) => {
     setSelected(name);
-    navigate(path); // ✅ Navigate to the corresponding page
+    navigate(path);
   };
 
   return (

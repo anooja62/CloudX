@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { AiOutlineCloud, AiOutlineSetting } from "react-icons/ai";
+//import { AiOutlineCloud, AiOutlineSetting } from "react-icons/ai";
 import { useAuth } from "../../context/AuthContext";
 
 const Profile: FC = () => {

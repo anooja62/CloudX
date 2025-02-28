@@ -2,8 +2,8 @@ import Google from "../../assets/google.png";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const { loginWithGoogle } = useAuth();
+const Login: React.FC = () => {  // ✅ Explicitly typing as a Functional Component
+  const { loginWithGoogle }: { loginWithGoogle: () => Promise<void> } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
