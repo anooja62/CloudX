@@ -26,8 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const {
     mutate: loginUser,
     data: backendUser,
-    isPending: userLoading,
-    error,
+   
   } = useLoginUser()
   console.log('backendUser', backendUser)
   useEffect(() => {

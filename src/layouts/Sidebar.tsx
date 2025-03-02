@@ -6,7 +6,7 @@ import { useUploadFile } from "../hooks/useFiles"; // Import the upload function
 
 interface MenuItem {
   name: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   path: string;
 }
 

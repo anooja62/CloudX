@@ -13,7 +13,7 @@ const Recent: FC = () => {
   const [menuOpen, setMenuOpen] = useState<number | null>(null)
   const dropdownRefs = useRef<(HTMLDivElement | null)[]>([])
 
-  const { data: files, isLoading, error } = useFiles()
+  const { data: files } = useFiles()
   console.log(files)
 
   const toggleMenu = (index: number) => {
@@ -45,14 +45,14 @@ const Recent: FC = () => {
   }
 
   // Download function
-  const handleDownload = (fileUrl: string, fileName: string) => {
-    const link = document.createElement('a')
-    link.href = fileUrl
-    link.download = fileName || 'download' // Default name if empty
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+  // const handleDownload = (fileUrl: string, fileName: string) => {
+  //   const link = document.createElement('a')
+  //   link.href = fileUrl
+  //   link.download = fileName || 'download' // Default name if empty
+  //   document.body.appendChild(link)
+  //   link.click()
+  //   document.body.removeChild(link)
+  // }
   const handleShare = async (fileUrl: string) => {
     try {
       await navigator.clipboard.writeText(fileUrl)
@@ -115,7 +115,7 @@ const Recent: FC = () => {
                       <FaEye className="mr-2 text-gray-600" /> Preview
                     </button>
                     <button
-                      onClick={() => handleDownload(file.url, file.file_name)}
+                    //  onClick={() => handleDownload(file.url, file.file_name)}
                       className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200"
                     >
                       <FaDownload className="mr-2 text-gray-600" /> Download
