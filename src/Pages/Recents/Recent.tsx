@@ -35,12 +35,39 @@ const Recent: FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [menuOpen])
 
+  // Preview function
+  const handlePreview = (fileUrl: string, mimeType: string) => {
+    if (mimeType.includes('image') || mimeType.includes('pdf')) {
+      window.open(fileUrl, '_blank') // Opens in a new tab
+    } else {
+      alert('Preview not available for this file type.')
+    }
+  }
+
+  // Download function
+  const handleDownload = (fileUrl: string, fileName: string) => {
+    const link = document.createElement('a')
+    link.href = fileUrl
+    link.download = fileName || 'download' // Default name if empty
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+  const handleShare = async (fileUrl: string) => {
+    try {
+      await navigator.clipboard.writeText(fileUrl)
+      alert('File link copied to clipboard! ✅')
+    } catch (err) {
+      console.error('Failed to copy link:', err)
+      alert('Failed to copy link. ❌')
+    }
+  }
   return (
     <div className="p-6 rounded-lg w-full">
       <h2 className="text-xl font-semibold mb-4 text-white">Recent Files</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {files?.map((file, index) => {
-          // Move date formatting OUTSIDE JSX
+          // Format date
           const formattedDate = new Date(file.created_at).toLocaleDateString("en-GB")
 
           return (
@@ -81,13 +108,23 @@ const Recent: FC = () => {
                     }}
                     className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg text-black text-sm z-10"
                   >
-                    <button className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200">
+                    <button
+                      onClick={() => handlePreview(file.url, file.mime_type)}
+                      className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
                       <FaEye className="mr-2 text-gray-600" /> Preview
                     </button>
-                    <button className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200">
+                    <button
+                      onClick={() => handleDownload(file.url, file.file_name)}
+                      className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
                       <FaDownload className="mr-2 text-gray-600" /> Download
                     </button>
-                    <button className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200">
+                    <button
+                      onClick={() => handleShare(file.url)}
+                      className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
+
                       <FaShareAlt className="mr-2 text-gray-600" /> Share
                     </button>
                   </div>

@@ -3,10 +3,12 @@ import { FaSearch } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../config/firebase";
+import { useFiles } from "../hooks/useFiles"; // Import useFiles hook
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ setSearchQuery: (query: string) => void }> = ({ setSearchQuery }) => {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,6 +30,12 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchTerm(query);
+    setSearchQuery(query); // Pass search query to parent component
+  };
+
   return (
     <div className="w-full bg-slate-800 p-4 flex items-center justify-between shadow-md relative">
       <h1 className="text-white text-2xl font-semibold">CloudX</h1>
@@ -36,7 +44,9 @@ const Navbar: React.FC = () => {
         <FaSearch className="text-gray-400 mr-2" />
         <input
           type="text"
-          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search files..."
           className="bg-transparent text-white focus:outline-none"
         />
       </div>
