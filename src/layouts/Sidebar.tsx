@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { FaHome, FaClock, FaUser } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-
+import { useUploadFile } from "../hooks/useFiles"; // Import the upload function
 
 interface MenuItem {
   name: string;
@@ -14,6 +14,7 @@ const Sidebar: React.FC = () => {
   const [selected, setSelected] = useState<string>("Home");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const uploadFileMutation = useUploadFile(); // Use the upload mutation
 
   const menuItems: MenuItem[] = [
     { name: "Home", icon: <FaHome />, path: "/" },
@@ -25,6 +26,20 @@ const Sidebar: React.FC = () => {
     fileInputRef.current?.click();
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      uploadFileMutation.mutate(file, {
+        onSuccess: () => {
+          console.log("File uploaded successfully!");
+        },
+        onError: (error) => {
+          console.error("Upload failed:", error);
+        },
+      });
+    }
+  };
+
   const handleNavigation = (name: string, path: string) => {
     setSelected(name);
     navigate(path);
@@ -32,13 +47,15 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="w-64 bg-slate-700 p-4 max-h-screen flex flex-col min-h-screen">
+      {/* Hidden File Input */}
       <input
         type="file"
         ref={fileInputRef}
         className="hidden"
-        onChange={(e) => console.log(e.target.files)}
+        onChange={handleFileUpload}
       />
 
+      {/* Upload Button */}
       <button
         className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.3)] mb-4 hover:bg-gray-200"
         onClick={handleNewClick}
@@ -47,6 +64,7 @@ const Sidebar: React.FC = () => {
         <span>New</span>
       </button>
 
+      {/* Sidebar Menu */}
       <ul className="flex flex-col space-y-1">
         {menuItems.map((item) => (
           <li

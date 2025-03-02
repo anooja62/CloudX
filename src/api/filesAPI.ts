@@ -20,3 +20,23 @@ export const fetchFiles = async (): Promise<File[]> => {
     const response = await axiosInstance.get<FileResponse>('/files');
     return response.data.files;
 };
+
+
+export const uploadFile = async (file: File): Promise<void> => {
+    const formData = new FormData();
+    formData.append("file", file); // Ensure the key matches backend expectations
+
+    try {
+        const response = await axiosInstance.post("/files/upload", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data", // Do not manually set boundary
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error uploading file:", error);
+        throw error;
+    }
+};
+
+
