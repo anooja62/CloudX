@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import { signInWithPopup, provider,auth } from "../config/firebase";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../config/firebase";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,7 @@ const Navbar = () => {
       <div className="relative">
         {user?.photoURL ? (
           <img
-          src={user.photoURL || "https://via.placeholder.com/150"} 
+            src={user.photoURL || "https://via.placeholder.com/150"} 
             alt="Profile"
             className="w-10 h-10 rounded-full cursor-pointer"
             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -67,7 +68,9 @@ const Navbar = () => {
               )}
               <div>
                 <p className="text-gray-800 text-sm font-semibold">{user.email}</p>
-                <button className="text-blue-500 text-xs underline" onClick={handleAddAccount}>Add another account</button>
+                <button className="text-blue-500 text-xs underline" onClick={handleAddAccount}>
+                  Change account
+                </button>
               </div>
             </div>
             <button
