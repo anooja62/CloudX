@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 
-const API_BASE_URL = "https://cloudx-api.vercel.app"; 
+const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL + '/api';
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
