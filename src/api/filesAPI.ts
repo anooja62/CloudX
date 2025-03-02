@@ -41,7 +41,8 @@ export const fetchFiles = async (): Promise<File[]> => {
 
 export const uploadFile = async (file: Blob | File): Promise<void> => {
     const formData = new FormData();
-    formData.append("file", file); // ✅ Now expects a real `File` object
+   formData.append("file", file as Blob);
+
 
     try {
         const response = await axiosInstance.post("/files/upload", formData, {
