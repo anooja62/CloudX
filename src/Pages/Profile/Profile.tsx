@@ -9,7 +9,7 @@ const Profile: FC = () => {
     <div className="bg-gray-900 text-white p-6 rounded-lg w-96">
       <div className="flex items-center space-x-4 mb-4">
         {user?.photoURL ? (
-       <img src={user.photoURL || "https://via.placeholder.com/150"} alt="Profile" className="w-12 h-12 rounded-full" />
+       <img src={user.photoURL || "https://imgs.search.brave.com/J5-KJNoclGIgO9mgbMuULm8xw_ri-hvqZYOyhc50Q64/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAyLzE3LzM0LzY3/LzM2MF9GXzIxNzM0/Njc4Ml83WHBDVHQ4/YkxOSnF2VkFhRFpK/d3Zaam0wZXBRbWo2/ai5qcGc"} alt="Profile" className="w-12 h-12 rounded-full" />
 
 
         ) : (

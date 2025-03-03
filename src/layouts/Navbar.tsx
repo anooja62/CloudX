@@ -8,6 +8,9 @@ interface NavbarProps {
 }
 const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
   const { user, logout } = useAuth();
+  console.log("User object in Navbar:", user);
+  console.log("Profile Image URL:", user?.photoURL);
+  
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
       <div className="relative">
         {user?.photoURL ? (
           <img
-            src={user.photoURL || "https://via.placeholder.com/150"} 
+            src={user.photoURL || "https://imgs.search.brave.com/J5-KJNoclGIgO9mgbMuULm8xw_ri-hvqZYOyhc50Q64/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAyLzE3LzM0LzY3/LzM2MF9GXzIxNzM0/Njc4Ml83WHBDVHQ4/YkxOSnF2VkFhRFpK/d3Zaam0wZXBRbWo2/ai5qcGc"} 
             alt="Profile"
             className="w-10 h-10 rounded-full cursor-pointer"
             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -57,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
           <div ref={dropdownRef} className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg p-4">
             <div className="flex items-center space-x-3 mb-3">
               {user.photoURL ? (
-                <img src={user.photoURL} alt="Profile" className="w-10 h-10 rounded-full" />
+                <img src={user.photoURL}  alt="Profile" className="w-10 h-10 rounded-full" />
               ) : (
                 <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-lg">?</div>
               )}
