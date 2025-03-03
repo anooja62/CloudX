@@ -56,34 +56,34 @@ const Recent: FC = () => {
     }
   }
 
-  const handleDownload = async (url: string | null, fileName: string) => {
-    if (!url) {
-      console.error("Invalid URL");
-      return;
-    }
+  // const handleDownload = async (url: string | null, fileName: string) => {
+  //   if (!url) {
+  //     console.error("Invalid URL");
+  //     return;
+  //   }
   
-    try {
-      const response = await fetch(url, { mode: "cors" }); // Ensure CORS is allowed
-      if (!response.ok) {
-        throw new Error(`Failed to fetch file: ${response.statusText}`);
-      }
+  //   try {
+  //     const response = await fetch(url, { mode: "cors" }); // Ensure CORS is allowed
+  //     if (!response.ok) {
+  //       throw new Error(`Failed to fetch file: ${response.statusText}`);
+  //     }
   
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
+  //     const blob = await response.blob();
+  //     const blobUrl = window.URL.createObjectURL(blob);
   
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.setAttribute("download", fileName || "download"); // Set filename
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  //     const link = document.createElement("a");
+  //     link.href = blobUrl;
+  //     link.setAttribute("download", fileName || "download"); // Set filename
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
   
-      // Cleanup
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Error downloading file:", error);
-    }
-  };
+  //     // Cleanup
+  //     window.URL.revokeObjectURL(blobUrl);
+  //   } catch (error) {
+  //     console.error("Error downloading file:", error);
+  //   }
+  // };
   
   
   const handleShare = async (fileUrl: string) => {
@@ -151,7 +151,7 @@ const Recent: FC = () => {
                     >
                       <FaEye className="mr-2 text-gray-600" /> Preview
                     </button>
-                    <button
+                    {/* <button
                       className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200"
                       onClick={() => {
                         if (file.url) {
@@ -164,7 +164,7 @@ const Recent: FC = () => {
 
                     >
                       <FaDownload className="mr-2 text-gray-600" /> Download
-                    </button>
+                    </button> */}
                     <button
                       onClick={() => handleShare(file.url)}
                       className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200"
