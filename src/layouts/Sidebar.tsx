@@ -27,18 +27,21 @@ const Sidebar: React.FC = () => {
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      uploadFileMutation.mutate(file, {
-        onSuccess: () => {
-          console.log("File uploaded successfully!");
-        },
-        onError: (error) => {
-          console.error("Upload failed:", error);
-        },
-      });
-    }
-  };
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileArray = Array.from(files); 
+
+    console.log("Uploading files:", fileArray);
+
+    uploadFileMutation.mutate(fileArray, {
+        onSuccess: () => console.log("All files uploaded successfully!"),
+        onError: (error) => console.error("Upload failed:", error),
+    });
+
+    event.target.value = ""; 
+};
+
 
   const handleNavigation = (name: string, path: string) => {
     setSelected(name);
@@ -52,6 +55,7 @@ const Sidebar: React.FC = () => {
         type="file"
         ref={fileInputRef}
         className="hidden"
+        multiple
         onChange={handleFileUpload}
       />
 

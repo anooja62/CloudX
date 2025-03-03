@@ -7,13 +7,7 @@ export const useFiles = () => {
         queryFn: fetchFiles,
     });
 };
-// export const useFiles = () => {
-//     return useQuery<UploadedFile[]>({
-//       queryKey: ["files"],
-//       queryFn: fetchFiles,
-//       initialData: [], 
-//     });
-//   };
+
 export const useUploadFile = () => {
     const queryClient = useQueryClient(); // To refresh the file list after upload
 
@@ -25,16 +19,6 @@ export const useUploadFile = () => {
         },
     });
 };
-// export const useUploadFile = () => {
-//     const queryClient = useQueryClient();
-  
-//     return useMutation<UploadedFile, Error, File>({
-//       mutationFn: uploadFile,
-//       onSuccess: (uploadedFile) => {
-//         console.log("Uploaded file:", uploadedFile); // ✅ Log the newly uploaded file
-//         queryClient.invalidateQueries({ queryKey: ["files"] });
-//       },
-//     });
-//   };
+
   
   

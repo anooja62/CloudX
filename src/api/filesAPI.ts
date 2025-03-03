@@ -39,10 +39,30 @@ export const fetchFiles = async (): Promise<File[]> => {
 //     }
 // };
 
-export const uploadFile = async (file: Blob | File): Promise<void> => {
-    const formData = new FormData();
-   formData.append("file", file as Blob);
+// export const uploadFile = async (file: Blob | File): Promise<void> => {
+//     const formData = new FormData();
+//    formData.append("file", file as Blob);
 
+
+//     try {
+//         const response = await axiosInstance.post("/files/upload", formData, {
+//             headers: {
+//                 "Content-Type": "multipart/form-data",
+//             },
+//         });
+//         return response.data;
+//     } catch (error) {
+//         console.error("Error uploading file:", error);
+//         throw error;
+//     }
+// };
+
+export const uploadFile = async (files: Blob[] | File[]): Promise<void> => {
+    const formData = new FormData();
+
+    files.forEach((file) => {
+        formData.append("file", file as Blob); // Ensure your backend expects "files" as an array
+    });
 
     try {
         const response = await axiosInstance.post("/files/upload", formData, {
@@ -52,9 +72,8 @@ export const uploadFile = async (file: Blob | File): Promise<void> => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error uploading file:", error);
+        console.error("Error uploading files:", error);
         throw error;
     }
 };
-
 
