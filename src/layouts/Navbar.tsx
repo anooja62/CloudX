@@ -2,8 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../config/firebase";
-
-const Navbar: React.FC = () => {
+import { FaBars } from "react-icons/fa";
+interface NavbarProps {
+  toggleSidebar: () => void;
+}
+const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -29,6 +32,9 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="w-full bg-slate-800 p-4 flex items-center justify-between shadow-md relative">
+       <button className="md:hidden text-white" onClick={toggleSidebar}>
+        <FaBars size={20} />
+      </button>
       <h1 className="text-white text-2xl font-semibold">CloudX</h1>
       <div className="relative">
         {user?.photoURL ? (
