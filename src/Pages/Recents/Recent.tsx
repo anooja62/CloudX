@@ -3,7 +3,7 @@ import {
   FaFilePdf,
   FaEllipsisV,
   FaEye,
-  FaDownload,
+  //FaDownload,
   FaShareAlt,
   FaFileImage,
   FaFileVideo,
