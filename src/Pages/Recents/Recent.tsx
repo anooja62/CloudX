@@ -137,7 +137,11 @@ const Recent: FC = () => {
           {/* Options Menu */}
           <div className="relative">
          
-            <button onClick={() => toggleMenu(index)} className="p-2 rounded-full hover:bg-gray-700">
+            <button onClick={(e) => {
+    e.stopPropagation(); 
+    toggleMenu(index);
+  }} 
+            className="p-2 rounded-full hover:bg-gray-700">
       {isGridView ? <FaEllipsisH /> : <FaEllipsisV />}
     </button>
             {menuOpen === index && (
