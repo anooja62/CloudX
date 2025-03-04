@@ -12,6 +12,8 @@ interface MenuItem {
 
 const Sidebar: React.FC = () => {
   const [selected, setSelected] = useState<string>("Home");
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const uploadFileMutation = useUploadFile(); // Use the upload mutation
@@ -29,19 +31,26 @@ const Sidebar: React.FC = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
-
-    const fileArray = Array.from(files); 
-
-    console.log("Uploading files:", fileArray);
-
+  
+    const fileArray = Array.from(files);
+    setUploading(true);
+    setProgress(0);
+  
     uploadFileMutation.mutate(fileArray, {
-        onSuccess: () => console.log("All files uploaded successfully!"),
-        onError: (error) => console.error("Upload failed:", error),
+      onSuccess: () => {
+        setProgress(100);
+        setTimeout(() => setUploading(false), 3000);
+      },
+      onError: (error) => {
+        console.error("Upload failed:", error);
+        setUploading(false);
+      },
+      // ❌ Remove onUploadProgress from here! React Query doesn't support it.
     });
-
-    event.target.value = ""; 
-};
-
+  
+    event.target.value = "";
+  };
+  
 
   const handleNavigation = (name: string, path: string) => {
     setSelected(name);
@@ -49,7 +58,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-64 bg-slate-700 p-4 max-h-screen flex flex-col min-h-screen">
+    <div className="w-64 bg-slate-700 p-4 max-h-screen flex flex-col min-h-screen relative">
       {/* Hidden File Input */}
       <input
         type="file"
@@ -61,7 +70,7 @@ const Sidebar: React.FC = () => {
 
       {/* Upload Button */}
       <button
-        className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.3)] mb-4 hover:bg-gray-200"
+        className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-md mb-4 hover:bg-gray-200"
         onClick={handleNewClick}
       >
         <IoMdAdd className="text-xl" />
@@ -82,6 +91,19 @@ const Sidebar: React.FC = () => {
           </li>
         ))}
       </ul>
+
+      {/* Upload Progress Bar */}
+      {uploading && (
+        <div className="fixed bottom-4 right-4 bg-gray-900 text-white p-2 rounded-lg shadow-lg w-64">
+          <p className="text-sm mb-1">Uploading...</p>
+          <div className="w-full bg-gray-700 rounded-full h-2">
+            <div
+              className="bg-blue-500 h-2 rounded-full transition-all"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

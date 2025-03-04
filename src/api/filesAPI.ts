@@ -1,5 +1,5 @@
-
 import axiosInstance from './axiosInstance';
+import { AxiosProgressEvent } from 'axios';
 
 export interface File {
     _id: string | null;
@@ -21,47 +21,10 @@ export const fetchFiles = async (): Promise<File[]> => {
     return response.data.files;
 };
 
-
-// export const uploadFile = async (file: File): Promise<void> => {
-//     const formData = new FormData();
-//     formData.append("file", file); // Ensure the key matches backend expectations
-
-//     try {
-//         const response = await axiosInstance.post("/files/upload", formData, {
-//             headers: {
-//                 "Content-Type": "multipart/form-data", // Do not manually set boundary
-//             },
-//         });
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error uploading file:", error);
-//         throw error;
-//     }
-// };
-
-// export const uploadFile = async (file: Blob | File): Promise<void> => {
-//     const formData = new FormData();
-//    formData.append("file", file as Blob);
-
-
-//     try {
-//         const response = await axiosInstance.post("/files/upload", formData, {
-//             headers: {
-//                 "Content-Type": "multipart/form-data",
-//             },
-//         });
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error uploading file:", error);
-//         throw error;
-//     }
-// };
-
-export const uploadFile = async (files: Blob[] | File[]): Promise<void> => {
+export const uploadFile = async (files: Blob[] | File[], onProgress?: (progress: number) => void): Promise<void> => {
     const formData = new FormData();
-
     files.forEach((file) => {
-        formData.append("file", file as Blob); // Ensure your backend expects "files" as an array
+        formData.append("file", file as Blob); // Ensure your backend expects "file" (not "files" unless specified)
     });
 
     try {
@@ -69,11 +32,19 @@ export const uploadFile = async (files: Blob[] | File[]): Promise<void> => {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
+            onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                const percentCompleted = Math.round(
+                    (progressEvent.loaded * 100) / (progressEvent.total ?? 1)
+                );
+                if (onProgress) {
+                    onProgress(percentCompleted); // Call progress callback
+                }
+            },
         });
+
         return response.data;
     } catch (error) {
         console.error("Error uploading files:", error);
         throw error;
     }
 };
-
