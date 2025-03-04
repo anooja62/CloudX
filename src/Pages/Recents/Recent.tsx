@@ -44,12 +44,28 @@ const Recent: FC = () => {
     }
   };
 
-  const getIcon = (mimeType: string) => {
-    if (mimeType.includes("image")) return <FaFileImage className="text-yellow-400 text-2xl" />;
-    if (mimeType.includes("pdf")) return <FaFilePdf className="text-red-400 text-2xl" />;
-    if (mimeType.includes("video")) return <FaFileVideo className="text-green-400 text-2xl" />;
+  const getIcon = (file: { mime_type: string; url: string }) => {
+    if (isGridView) {
+      if (file.mime_type.includes("image")) {
+        return <img src={file.url} alt="Thumbnail" className="w-16 h-16 object-cover rounded-lg" />;
+      }
+      if (file.mime_type.includes("video")) {
+        return (
+          <video className="w-16 h-16 object-cover rounded-lg" muted>
+            <source src={file.url} type={file.mime_type} />
+          </video>
+        );
+      }
+    }
+  
+    // Default icons for non-grid or unsupported types
+    if (file.mime_type.includes("image")) return <FaFileImage className="text-yellow-400 text-2xl" />;
+    if (file.mime_type.includes("pdf")) return <FaFilePdf className="text-red-400 text-2xl" />;
+    if (file.mime_type.includes("video")) return <FaFileVideo className="text-green-400 text-2xl" />;
+    
     return <FaFileAlt className="text-gray-400 text-2xl" />;
   };
+  
 
   return (
     <div className="p-6 rounded-lg w-full">
@@ -93,16 +109,28 @@ const Recent: FC = () => {
             isGridView ? "flex-col items-center text-center bg-gray-800 w-full min-h-[120px]" 
                       : "flex-row bg-gray-900"
           }`}
+          onClick={() => handlePreview(file.url, file.mime_type)}
         >
-          <div className="text-2xl p-3 rounded-lg">{getIcon(file.mime_type)}</div>
+          <div className="text-2xl p-3 rounded-lg">{getIcon(file)}</div>
           <div className="flex-1 w-full">
-            <div className="relative group w-full">
-              {/* Truncate filename with tooltip */}
-              <p className="truncate max-w-[90%] mx-auto text-sm font-medium">{file.file_name}</p>
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg shadow-lg transition-opacity duration-200">
-                {file.file_name}
-              </div>
-            </div>
+          <div className="relative group w-full">
+  {/* Apply truncate only if in grid view */}
+  <p
+    className={`mx-auto text-sm font-medium ${
+      isGridView ? "truncate max-w-[70%]" : ""
+    }`}
+  >
+    {file.file_name}
+  </p>
+
+  {/* Tooltip for full filename, shown only in grid view */}
+  {isGridView && (
+    <div className="absolute bottom-full transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg shadow-lg transition-opacity duration-200">
+      {file.file_name}
+    </div>
+  )}
+</div>
+
             <p className="text-xs text-gray-400">{formattedDate} • {file.size_formatted}</p>
           </div>
 
