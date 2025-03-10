@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { FaBars } from "react-icons/fa"; // Mobile menu icon
+
 
 const MainLayout: React.FC = () => {
   const { user } = useAuth();
@@ -47,15 +47,7 @@ const MainLayout: React.FC = () => {
         </main>
       </div>
 
-      {/* Mobile Sidebar Toggle Button */}
-      {!sidebarOpen && (
-        <button
-          className="fixed top-4 left-4 md:hidden bg-slate-700 text-white p-2 rounded-full"
-          onClick={() => setSidebarOpen(true)}
-        >
-          <FaBars size={20} />
-        </button>
-      )}
+   
     </div>
   );
 };
