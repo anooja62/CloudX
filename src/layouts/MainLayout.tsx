@@ -7,11 +7,14 @@ import { FaBars } from "react-icons/fa"; // Mobile menu icon
 
 const MainLayout: React.FC = () => {
   const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false); 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         setSidebarOpen(false);
       }
     };
@@ -24,8 +27,14 @@ const MainLayout: React.FC = () => {
   return (
     <div className="flex bg-slate-800 min-h-screen">
       {/* Sidebar (Hidden on small screens, toggleable) */}
-      <div ref={sidebarRef} className={`fixed inset-y-0 left-0 z-50 transition-transform transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static md:w-64 bg-slate-900`}>
-        <Sidebar />
+      <div
+        ref={sidebarRef}
+        className={`absolute md:relative inset-y-0 left-0 z-50 transition-transform transform 
+     ${
+       sidebarOpen ? "translate-x-0" : "-translate-x-full"
+     } md:translate-x-0 md:w-64 bg-slate-900`}
+      >
+        <Sidebar isOpen={sidebarOpen} />
       </div>
 
       <div className="flex-1 flex flex-col">

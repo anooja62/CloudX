@@ -10,7 +10,7 @@ interface MenuItem {
   path: string;
 }
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<{ isOpen?: boolean }> = ({ isOpen }) => {
   const [selected, setSelected] = useState<string>("Home");
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -58,7 +58,8 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-64 bg-slate-700 p-4 max-h-screen flex flex-col min-h-screen relative">
+    <div className={`w-64 bg-slate-700 p-4 max-h-screen flex flex-col min-h-screen transition-transform
+      ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
       {/* Hidden File Input */}
       <input
         type="file"
